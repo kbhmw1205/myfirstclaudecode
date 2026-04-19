@@ -37,4 +37,6 @@ jobs:
 
       - name: KAVEN 1회 실행
         working-directory: kaven
-        run: python -m src.kaven.kaven --once
+        env:
+          PYTHONPATH: ${{ github.workspace }}/kaven:${{ github.workspace }}/kaven/src/kaven
+        run: python src/kaven/kaven.py --once
