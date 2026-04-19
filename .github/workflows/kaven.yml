@@ -37,4 +37,4 @@ jobs:
 
       - name: KAVEN 1회 실행
         working-directory: kaven
-        run: python src/kaven/kaven.py --once
+        run: python -m src.kaven.kaven --once
