@@ -1,0 +1,40 @@
+name: KAVEN 지정학 모니터링
+
+on:
+  workflow_dispatch:        # 일단 수동 실행만 (테스트용)
+  # schedule:
+  #   - cron: '0 * * * *'  # 테스트 성공 후 매시간 실행 주석 해제
+
+jobs:
+  run-kaven:
+    runs-on: ubuntu-latest
+    steps:
+      - name: KAVEN 코드 받아오기
+        uses: actions/checkout@v4
+        with:
+          repository: avlp12/kaven
+          path: kaven
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성 설치
+        working-directory: kaven
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+
+      - name: .env 파일 생성
+        working-directory: kaven/src/kaven
+        run: |
+          cat > .env << EOF
+          TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_TOPIC_MAVEN=
+          EOF
+
+      - name: KAVEN 1회 실행
+        working-directory: kaven
+        run: python src/kaven/kaven.py --once
