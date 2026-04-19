@@ -1,0 +1,24 @@
+name: 복귀 알림
+
+on:
+  schedule:
+    - cron: '30 10 * * 0'  # 매주 일요일 19:30 KST (UTC+9)
+  workflow_dispatch:        # GitHub에서 수동 실행 가능
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install requests
+
+      - name: 텔레그램 알림 전송
+        run: python reminder.py
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
