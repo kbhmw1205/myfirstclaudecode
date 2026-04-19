@@ -32,7 +32,7 @@ jobs:
           cat > .env << EOF
           TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}
-          TELEGRAM_TOPIC_MAVEN=
+          TELEGRAM_TOPIC_MAVEN=0
           EOF
 
       - name: KAVEN 1회 실행
